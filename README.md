@@ -1,24 +1,30 @@
-# Tunnel Inspection Support Tools Launcher (TN)
+# トンネル点検調書作成支援ツール (TN)
 
-This repository contains the launcher and distribution scripts for the Tunnel Inspection Support Tools suite.
+このリポジトリは、トンネル点検業務で使用する各種支援ツールを一元管理・起動するためのランチャーと、配布用スクリプトを管理しています。
 
-## Overview
-This project provides a centralized launcher (`Launcher.py` / `Launcher.bat`) to manage and execute various standalone tools used for tunnel inspection data processing. It also includes scripts to package the tools for offline distribution.
+## 概要
+複数の点検支援ツール（例：ひび割れ密度算出、入力シート転記など）を、統一されたインターフェースから簡単に起動できるランチャーツールです。
+また、Python環境がないPCでも動作するように、埋め込みPythonを含めた「配布用パッケージ」を簡単に作成する機能も備えています。
 
-## Key Files
-- **Launcher.py**: The main GUI application (Flet-based) to launch tools.
-- **Launcher.bat**: Portable startup script (auto-detects embedded Python).
-- **BUILD_DIST.bat**: Script to create a distribution package (`dist_package`) containing the launcher and all tools.
-- **tools.json**: Configuration file defining the registered tools.
-- **requirements.txt**: Python dependencies for the launcher environment.
+## 主要ファイル構成
+- **Launcher.py**: ランチャーツール本体（Python/Flet製）。
+- **Launcher.bat**: 起動用バッチファイル。埋め込みPythonを自動検知して起動します。
+- **BUILD_DIST.bat**: 配布用パッケージ（`dist_package`）を作成するためのスクリプト。
+- **tools.json**: 登録ツールの設定ファイル。メニューの内容を定義します。
+- **requirements.txt**: ランチャー動作に必要なPythonライブラリ一覧。
 
-## Usage
-1. Run `Launcher.bat` to open the tool selection menu.
-2. Click "起動" on any tool card to launch that specific tool.
+## 使い方
+1. `Launcher.bat` をダブルクリックして起動します。
+2. 起動したいツールのカードにある「起動」ボタンをクリックします。
 
-## Distribution
-To create a portable package for other PCs:
-1. Run `BUILD_DIST.bat`.
-2. A `dist_package` folder will be created.
-3. Download a standard Python Embeddable Package (zip) and extract it to `dist_package/python`.
-4. Install dependencies using `pip` into that embedded Python.
+## 配布パッケージの作成方法（管理者向け）
+他のPCで利用可能な配布フォルダを作成する手順です：
+
+1. `BUILD_DIST.bat` を実行します。
+2. `dist_package` というフォルダが作成され、必要なファイルが集約されます。
+3. **Python Embeddable Package**（zip版）をダウンロードし、解凍して中身を `dist_package/python` フォルダとして配置します。
+4. そのPython環境に対し、依存ライブラリをインストールします：
+   ```cmd
+   dist_package\python\python.exe -m pip install -r dist_package\requirements.txt
+   ```
+5. 完成した `dist_package` フォルダを配布します。
