@@ -1,0 +1,12 @@
+dist_package/
+__pycache__/
+*.pyc
+*.spec
+
+# Tools (ignored as per request)
+Crack_Density/
+D-1-1_2InputSheet/
+D-3_sheet_creater/
+DXF2D-2/
+DXF_facility_counter/
+paint4save/

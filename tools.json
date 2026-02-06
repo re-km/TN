@@ -1,0 +1,38 @@
+[
+  {
+    "name": "ひび割れ密度算出 (Crack Density)",
+    "description": "DXFからひび割れデータを抽出・集計します。",
+    "command": "Crack_Density/ひび割れデータ抽出.bat",
+    "icon": "analytics"
+  },
+  {
+    "name": "入力シート転記 (D-1-1 -> Input)",
+    "description": "様式D-1-1から入力シートへ転記・寸法変換します。",
+    "command": "D-1-1_2InputSheet/実行.bat",
+    "icon": "file_copy"
+  },
+  {
+    "name": "様式D-3シート追加 (Sheet Creator)",
+    "description": "Excelアドインを操作して様式D-3シートを自動追加します。",
+    "command": "D-3_sheet_creater/run_sheet_creater.bat",
+    "icon": "post_add"
+  },
+  {
+    "name": "DXF分割 (DXF Splitter)",
+    "description": "統合DXF図面を個別のファイルに分割します。",
+    "command": "DXF2D-2/run_splitter.bat",
+    "icon": "grid_view"
+  },
+  {
+    "name": "設備数量集計 (Facility Counter)",
+    "description": "DXF内の設備番号を集計し欠番を確認します。",
+    "command": "DXF_facility_counter/run_tools.bat",
+    "icon": "format_list_numbered"
+  },
+  {
+    "name": "画像修復 (Paint Save)",
+    "description": "画像をRGB形式に変換・修復して保存します。",
+    "command": "paint4save/run.bat",
+    "icon": "image"
+  }
+]

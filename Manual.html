@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>トンネル点検調書作成支援ツール マニュアル</title>
+    <style>
+        body { font-family: "Meiryo", "Yu Gothic", sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px; background-color: #f4f6f9; }
+        .container { max-width: 960px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 15px; margin-bottom: 30px; }
+        h2 { color: #2980b9; border-left: 5px solid #2980b9; padding-left: 10px; margin-top: 40px; margin-bottom: 20px; }
+        h3 { color: #34495e; margin-top: 25px; }
+        p { margin-bottom: 15px; }
+        ul, ol { margin-bottom: 15px; }
+        code { background-color: #f0f0f0; padding: 2px 5px; border-radius: 3px; font-family: Consolas, monospace; }
+        pre { background-color: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto; border: 1px solid #e9ecef; }
+        .tool-section { margin-bottom: 60px; border-bottom: 1px solid #eee; padding-bottom: 40px; }
+        .tool-section:last-child { border-bottom: none; }
+        .nav { background: #34495e; padding: 15px; border-radius: 5px; margin-bottom: 30px; }
+        .nav a { color: #fff; text-decoration: none; margin-right: 20px; font-weight: bold; }
+        .nav a:hover { text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>トンネル点検調書作成支援ツール マニュアル</h1>
+
+    <div class="nav">
+        <a href="#crack-density">ひび割れ密度算出</a>
+        <a href="#d1-1">D-1-1転記</a>
+        <a href="#d3-sheet">様式D-3作成</a>
+        <a href="#dxf-split">DXF分割</a>
+        <a href="#facility-counter">設備数量集計</a>
+        <a href="#paint-save">画像修復</a>
+    </div>
+
+    <!-- ひび割れ密度算出 -->
+    <div id="crack-density" class="tool-section">
+        <h2>ひび割れ密度算出 (Crack Density)</h2>
+        <p>DXFファイル（変状展開図）からひび割れデータを抽出し、Excelファイルに転記するツールです。</p>
+
+        <h3>機能</h3>
+        <ul>
+            <li>D-STR-TXTレイヤーからS番号（S001〜S409等）を自動検出</li>
+            <li>寸法線グループ内のS番号にも対応</li>
+            <li>「0.3mm未満ひび割れ」「0.3mm以上ひび割れ」レイヤーからテキストを抽出</li>
+            <li>ひび割れ長さをmmからm単位に自動変換（例: 550mm → 0.55m）</li>
+            <li>各S番号の範囲に属するデータをExcelに転記</li>
+        </ul>
+
+        <h3>使用方法</h3>
+        <ol>
+            <li>ランチャーの「ひび割れ密度算出」の「起動」ボタンをクリックします（または <code>Crack_Density/ひび割れデータ抽出.bat</code> を実行）。</li>
+            <li>フォルダ内のDXFファイルとExcelファイルが自動的に読み込まれます。</li>
+            <li>処理完了後、同じフォルダに <code>*_出力.xlsx</code> という名前で結果ファイルが生成されます。</li>
+        </ol>
+
+        <h3>入力ファイル要件</h3>
+        <ul>
+            <li><strong>DXFファイル</strong>:
+                <ul>
+                    <li>レイヤー <code>D-STR-TXT</code>: S番号テキスト</li>
+                    <li>レイヤー <code>0.3mm未満ひび割れ</code> / <code>0.3mm以上ひび割れ</code>: ひび割れテキスト（例: 0.1×550）</li>
+                </ul>
+            </li>
+            <li><strong>Excelファイル</strong>: 3行目にS番号がヘッダーとして配置されていること。</li>
+        </ul>
+    </div>
+
+    <!-- D-1-1 転記 -->
+    <div id="d1-1" class="tool-section">
+        <h2>入力シート転記 (D-1-1 -> Input Sheet)</h2>
+        <p>トンネル点検調書のExcelデータ（様式D-1-1）を入力シートに転記し、寸法をmmからmに自動変換するツールです。</p>
+
+        <h3>機能</h3>
+        <ul>
+            <li><code>5桁の数字_D-1-1.xlsm</code> からデータを取り込みます。</li>
+            <li><code>トンネル点検調書入力シートVer_2（福井県Ver_rebircle）.xlsx</code> に値を貼り付けます。</li>
+            <li>入力シートのX列にある <code>数字mm×数字mm</code> 形式のデータを解析し、M列・N列にメートル単位で入力します。</li>
+        </ul>
+
+        <h3>使用方法</h3>
+        <ol>
+            <li><code>D-1-1_2InputSheet</code> フォルダに、転記元の <code>*_D-1-1.xlsm</code> ファイルとテンプレートの <code>入力シート.xlsx</code> を配置します。</li>
+            <li>ランチャーの「入力シート転記」の「起動」ボタンをクリックします（または <code>実行.bat</code> を実行）。</li>
+            <li><code>*_トンネル点検調書入力シート.xlsx</code> が生成されます。</li>
+        </ol>
+    </div>
+
+    <!-- D-3 シート作成 -->
+    <div id="d3-sheet" class="tool-section">
+        <h2>様式D-3シート追加 (Sheet Creator)</h2>
+        <p>指定されたExcelファイル（A.xlsx）のデータ量に基づいて、様式D-3シートを自動追加・転記するツールです。</p>
+
+        <h3>機能</h3>
+        <ul>
+            <li><code>xxxxx_A.xlsx</code> のデータ行数をカウント。</li>
+            <li><code>xxxxx_D-3.xlsm</code> を開き、Excelアドインの「様式D-3シート追加」ボタンを必要な回数だけ自動クリックします。</li>
+            <li>作成されたシートにデータを転記します。</li>
+        </ul>
+
+        <h3>使用方法</h3>
+        <ol>
+            <li><strong>事前にExcelを手動で起動し、対象の <code>xxxxx_D-3.xlsm</code> ファイルを開いておいてください。</strong></li>
+            <li>ランチャーの「様式D-3シート追加」の「起動」ボタンをクリックします（または <code>run_sheet_creater.bat</code> を実行）。</li>
+            <li>黒い画面（コマンドプロンプト）が表示され、自動処理が始まります。マウス操作などは控えてください。</li>
+            <li>「処理が終了しました」と表示されたら完了です。</li>
+        </ol>
+    </div>
+
+    <!-- DXF 分割 -->
+    <div id="dxf-split" class="tool-section">
+        <h2>DXF分割 (DXF Splitter)</h2>
+        <p>複数の図面が統合されたDXFファイルを、個別の図面ファイルに自動分割するツールです。</p>
+
+        <h3>機能</h3>
+        <ul>
+            <li>図面サイズと配置（横並び・縦並び）を自動検出。</li>
+            <li>図面内のタイトル文字を検出し、ファイル名に自動適用します。</li>
+            <li>各図面を原点(0,0)に移動して保存します。</li>
+            <li>図面枠レイヤーを自動的に除外します。</li>
+        </ul>
+
+        <h3>使用方法</h3>
+        <ol>
+            <li><code>DXF2D-2</code> フォルダに分割したいDXFファイルを置きます。</li>
+            <li>ランチャーの「DXF分割」の「起動」ボタンをクリックします（または <code>run_splitter.bat</code> を実行）。</li>
+            <li><code>[元のファイル名]_split</code> というフォルダが作成され、その中に分割されたDXFファイルが出力されます。</li>
+        </ol>
+    </div>
+
+    <!-- 設備数量集計 -->
+    <div id="facility-counter" class="tool-section">
+        <h2>設備数量集計 (Facility Counter)</h2>
+        <p>DXFファイル内のテキスト（設備番号など）を集計し、Excelレポートを作成するツールです。</p>
+
+        <h3>機能</h3>
+        <ul>
+            <li>フォルダ内のDXFファイルを一括処理。</li>
+            <li>H001, PB001 などのアルファベットプレフィックスごとに番号を集計。</li>
+            <li>番号の抜け（欠番）をチェック。</li>
+            <li><code>facility_counts_report.xlsx</code> に結果を出力。</li>
+        </ul>
+
+        <h3>使用方法</h3>
+        <ol>
+            <li><code>DXF_facility_counter</code> フォルダに対象のDXFファイルを置きます。</li>
+            <li>ランチャーの「設備数量集計」の「起動」ボタンをクリックします（または <code>run_tools.bat</code> を実行）。</li>
+            <li>同じフォルダに <code>facility_counts_report.xlsx</code> が生成されます。</li>
+        </ol>
+    </div>
+
+    <!-- 画像修復 -->
+    <div id="paint-save" class="tool-section">
+        <h2>画像修復 (Paint Save)</h2>
+        <p>画像ファイルを読み込み、RGB形式で再保存することで、フォーマット起因のエラー（Error 481など）を修正するツールです。</p>
+
+        <h3>機能</h3>
+        <ul>
+            <li>指定フォルダ内の画像（jpg, png, bmp）を一括処理。</li>
+            <li>CMYKや透過などが含まれる画像を標準的なRGB形式に変換。</li>
+            <li>Exif情報なども正規化され、他のツールで読み込みやすくなります。</li>
+        </ul>
+
+        <h3>使用方法</h3>
+        <ol>
+            <li><code>paint4save/images</code> フォルダに、修復したい・変換したい画像を入れます。</li>
+            <li>ランチャーの「画像修復」の「起動」ボタンをクリックします（または <code>run.bat</code> を実行）。</li>
+            <li><code>paint4save/images_fixed</code> フォルダに、修復済みの画像が保存されます。</li>
+        </ol>
+    </div>
+
+</div>
+
+</body>
+</html>
